@@ -44,7 +44,15 @@ LIBS += -lws2_32
 LIBS += -lmswsock
 }else{
 # linux gcc
-INCLUDEPATH += /11.4/home/hyc/i4trunk/packages/boost/boost_i4/
+#    sudo apt-get install libboost-all-dev
+#INCLUDEPATH += "/usr/include"
+QMAKE_CXXFLAGS += -std=c++11 -Wno-strict-aliasing
+
+#LIBS += /usr/lib/x86_64-linux-gnu/libboost_thread.a
+LIBS += -lboost_thread
+
+#LIBS += /usr/lib/x86_64-linux-gnu/libboost_system.a
+LIBS += -lboost_system
 }
 
 # install
