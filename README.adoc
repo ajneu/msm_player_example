@@ -5,3 +5,25 @@ Christophe Henry's CD player example of Boost MSM (Meta State Machine); that he 
 * https://meetingcpp.com/index.php/talkview13/items/17.html[*Overview-Link*]
 
 This repo has the everything from the "Slides & Example" (https://meetingcpp.com/tl_files/2013/talks/MeetingC++2013asynchronMSM-Qt.zip[zip-Link]), except for `MeetingCpp/player/doc` (Download the zip-Link, if you want to see that)
+
+## Code-Changes
+
+commit 3444bc73d3ce4bd1cca25f61166deae9911b2430 is identical with the original code.
+So changes can be seen with `git diff 3444bc73d3ce4bd1cca25f61166deae9911b2430 HEAD`
+
+Since the commit made immediately after 3444bc73d3ce4bd1cca25f61166deae9911b2403
+[source,bash]
+----
+$ git log  --ancestry-path 3444bc73d3ce4bd1cca25f61166deae9911b2430^..master --skip 2 -1
+commit ae76d7baf12a3f61f96e0b200c1efd99f9286af1
+Author: ajneu <ajneu@users.noreply.github.com>
+Date:   Tue Sep 1 20:20:59 2015 +0200
+
+    remove unneeded files
+
+----
+simply removes a lot of files.. its better to see the actual code-changes with
+[source,bash]
+----
+git diff ae76d7baf12a3f61f96e0b200c1efd99f9286af1 HEAD
+----
