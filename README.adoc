@@ -1,0 +1,7 @@
+# msm_player_example
+
+Christophe Henry's CD player example of Boost MSM (Meta State Machine); that he presented at Meeting C++ 2013:
+
+* https://meetingcpp.com/index.php/talkview13/items/17.html[*Overview-Link*]
+
+This repo has the everything from the "Slides & Example" (https://meetingcpp.com/tl_files/2013/talks/MeetingC++2013asynchronMSM-Qt.zip[zip-Link]), except for `MeetingCpp/player/doc` (Download the zip-Link, if you want to see that)
