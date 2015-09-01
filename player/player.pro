@@ -2,6 +2,8 @@ QT       += core
 QT       += gui
 QT       += widgets
 
+CONFIG += c++11
+
 #use this for full eUML implementation (looong compile)
 #CONFIG += fulleuml
 #CONFIG += euml
@@ -37,7 +39,6 @@ SOURCES       = button.cpp \
 }
 win32{
 INCLUDEPATH += "c:/xtoff/boost_1_54_0"
-QMAKE_CXXFLAGS += -std=c++11 -Wno-strict-aliasing
 LIBS += c:/xtoff/boost_1_54_0/stage/lib/libboost_thread-mgw47-mt-1_54.a
 LIBS += c:/xtoff/boost_1_54_0/stage/lib/libboost_system-mgw47-mt-1_54.a
 LIBS += -lws2_32

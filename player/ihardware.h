@@ -7,7 +7,7 @@
 #ifndef IHARDWARE_H
 #define IHARDWARE_H
 
-#include <boost/function.hpp>
+#include <functional>
 
 class IHardware
 {
@@ -15,8 +15,8 @@ public:
     virtual ~IHardware();
     // supported HW actions
     // the actions with callback require the callback to be posted to the correct thread (where the fsm lives)
-    virtual void openDrawer(boost::function<void()> callback)=0;
-    virtual void closeDrawer(boost::function<void()> callback)=0;
+    virtual void openDrawer(std::function<void()> callback)=0;
+    virtual void closeDrawer(std::function<void()> callback)=0;
     virtual void startPlaying()=0;
     virtual void stopPlaying()=0;
     virtual void pausePlaying()=0;
@@ -25,7 +25,7 @@ public:
     virtual void volumeUp()=0;
     virtual void volumeDown()=0;
 
-    virtual void startTimer(int intervalMs,boost::function<void()> callback)=0;
+    virtual void startTimer(int intervalMs,std::function<void()> callback)=0;
     virtual void stopTimer()=0;
 };
 

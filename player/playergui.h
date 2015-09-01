@@ -7,8 +7,9 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 #include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/thread/thread.hpp>
+#include <functional>
+#include <memory>
+#include <thread>
 
 #include <QWidget>
 #include <idisplay.h>
@@ -34,6 +35,8 @@ class PlayerGui : public QWidget, public IDisplay, public IHardware
 public:
     PlayerGui(QWidget *parent = 0);
 
+    ~PlayerGui();
+    
 private slots:
     void playClicked();
     void stopClicked();
@@ -52,8 +55,8 @@ private:
     // from IDisplay
     virtual void setDisplayText(QString const& text);
     // from IHardware
-    virtual void openDrawer(boost::function<void()> callback);
-    virtual void closeDrawer(boost::function<void()> callback);
+    virtual void openDrawer(std::function<void()> callback);
+    virtual void closeDrawer(std::function<void()> callback);
     virtual void startPlaying();
     virtual void stopPlaying();
     virtual void pausePlaying();
@@ -61,7 +64,7 @@ private:
     virtual void previousSong();
     virtual void volumeUp();
     virtual void volumeDown();
-    virtual void startTimer(int intervalMs,boost::function<void()> callback);
+    virtual void startTimer(int intervalMs,std::function<void()> callback);
     virtual void stopTimer();
 
     void checkEnabledButtons();
@@ -85,12 +88,12 @@ private:
     PlayerLogic logic_;
     // our asio worker thread
     // is used to simulate hardware
-    boost::shared_ptr<boost::asio::io_service > ioservice_;
-    boost::shared_ptr<boost::asio::io_service::work> work_;
-    boost::shared_ptr<boost::thread> thread_;
+    std::shared_ptr<boost::asio::io_service > ioservice_;
+    std::shared_ptr<boost::asio::io_service::work> work_;
+    std::shared_ptr<std::thread> thread_;
 
 
-    boost::function<void()> currentCallback;
+    std::function<void()> currentCallback;
 
 };
 

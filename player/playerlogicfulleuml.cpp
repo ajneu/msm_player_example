@@ -10,8 +10,7 @@
 //#define FUSION_MAX_SET_SIZE 20
 // we have more than the default 20 transitions, so we need to require more from Boost.MPL
 #include "boost/mpl/vector/vector30.hpp"
-#include <boost/utility/enable_if.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <type_traits>
 // back-end
 #include <boost/msm/back/state_machine.hpp>
 //front-end
@@ -238,7 +237,7 @@ namespace
     {
         // we leave the state with another event than pause => we want to start from beginning
         template <class Event,class FSM,class STATE>
-        typename boost::disable_if<typename boost::is_same<Event,BOOST_MSM_EUML_EVENT_NAME(pausing)>::type,void>::type
+        typename std::enable_if<! std::is_same<Event,BOOST_MSM_EUML_EVENT_NAME(pausing)>::value,void>::type
         operator()(Event const&,FSM& ,STATE& fsm)
         {
             fsm.get_attribute(currentSong_)=0;
@@ -246,7 +245,7 @@ namespace
         }
         // we leave the state with pause => we want to continue where we left
         template <class Event,class FSM,class STATE>
-        typename boost::enable_if<typename boost::is_same<Event,BOOST_MSM_EUML_EVENT_NAME(pausing)>::type,void>::type
+        typename std::enable_if<  std::is_same<Event,BOOST_MSM_EUML_EVENT_NAME(pausing)>::value,void>::type
         operator()(Event const&,FSM&,STATE& fsm)
         {
             fsm.get_attribute(active_) = false;

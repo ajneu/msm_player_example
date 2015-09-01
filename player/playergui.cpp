@@ -14,11 +14,10 @@
 #include <QButtonGroup>
 #include <QLabel>
 #include <QApplication>
-#include <math.h>
+#include <chrono>
 
 #include "button.h"
 
-#include <boost/make_shared.hpp>
 
 namespace {
 // these custom events will be send to PlayerGui from the HW thread when HW action completes
@@ -38,12 +37,12 @@ public:
 PlayerGui::PlayerGui(QWidget *parent)
     : QWidget(parent),
       logic_(this,this),
-      ioservice_(boost::make_shared<boost::asio::io_service>()),
+      ioservice_(std::make_shared<boost::asio::io_service>()),
       work_(new boost::asio::io_service::work(*ioservice_)),
       thread_()
 {
     auto service = ioservice_;
-    thread_ = boost::make_shared<boost::thread>([service](){service->run();});
+    thread_ = std::make_shared<std::thread>([service](){service->run();});
 
     display = new QLineEdit("");
 
@@ -107,6 +106,7 @@ PlayerGui::PlayerGui(QWidget *parent)
     setLayout(mainLayout);
 
     timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(timerDone()));
     timer->setSingleShot(true);
     setWindowTitle(tr("Player"));
     logic_.start();
@@ -177,10 +177,9 @@ void PlayerGui::customEvent(QEvent *event)
     QObject::customEvent(event);
 }
 
-void PlayerGui::startTimer(int intervalMs,boost::function<void()> callback)
+void PlayerGui::startTimer(int intervalMs,std::function<void()> callback)
 {
     currentCallback = callback;
-    connect(timer,SIGNAL(timeout()),this,SLOT(timerDone()));
     timer->start(intervalMs);
 }
 void PlayerGui::stopTimer()
@@ -205,24 +204,24 @@ void PlayerGui::setDisplayText(QString const& text)
     display->setText(text);
 }
 
-void PlayerGui::openDrawer(boost::function<void()> callback)
+void PlayerGui::openDrawer(std::function<void()> callback)
 {
     // post job to the HW thread and wait for cutom event when done
     currentCallback = callback;
     ioservice_->post([this]()
                      {
-                        boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
+                        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
                         QApplication::postEvent(this,new OpenedEvent);
                      });
     hwActions->setText("open");
 }
-void PlayerGui::closeDrawer(boost::function<void()> callback)
+void PlayerGui::closeDrawer(std::function<void()> callback)
 {
     // post job to the HW thread and wait for cutom event when done
     currentCallback = callback;
     ioservice_->post([this]()
                      {
-                        boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
+                        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
                         QApplication::postEvent(this,new ClosedEvent);
                      });
     hwActions->setText("close");
@@ -278,4 +277,10 @@ void PlayerGui::checkEnabledButtons()
     {
         openCloseButton->setEnabled(false);
     }
+}
+
+PlayerGui::~PlayerGui()
+{
+  work_.reset();
+  thread_->detach();           // thread_->join(); // has different behaviour if timer is still running
 }

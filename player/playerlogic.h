@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <idisplay.h>
 #include <ihardware.h>
@@ -56,7 +56,7 @@ public:
 
 private:
     struct StateMachine;
-    boost::shared_ptr<StateMachine> fsm_;
+    std::shared_ptr<StateMachine> fsm_;
 };
 
 #endif // PLAYERLOGIC_H
