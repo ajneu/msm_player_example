@@ -1,0 +1,5 @@
+Here you might have to adjust the values of Len and Align at the bottom of playerlogic.h
+(A static_assert in playerlogic.cpp will stop the compilation if this is necessary!)
+
+For my current architecture, the values are
+   Aligned_storer</*Len*/ 440, /*Align*/ 8> fsm_;
